@@ -1,18 +1,20 @@
-# Tutorial - Deploy CodeLlama-70B using Inferless
+# Tutorial - Deploying Codellama - 34b with vLLM-GPTQ
 
-Check out [this tutorial](https://tutorials.inferless.com/deploy-codellama-70b-using-inferless) which will guide you through the process of deploying a CodeLlama-70B model using Inferless.
+Check out [this tutorial](https://tutorials.inferless.com/) which will guides you through the process of deploying a CodeLlama-Python-34B GPTQ model using Inferless.
 
-## TL;DR - Deploy  using Inferless:
-- Deployment of Deploy CodeLlama-70B model using [vLLM](https://github.com/vllm-project/vllm).
-- By using the vLLM, you can expect an average latency of 6.67 sec, generating an average of 33.18 tokens/sec where each token took 30.13 ms and an average cold start time of 26.36 sec using an A100 GPU(80GB).
-- Dependencies defined in inferless-runtime-config.yaml.
-- GitHub/GitLab template creation with app.py and inferless-runtime-config.yaml.
+## TL;DR - Deploying CodeLlama-Python-34B with Inferless:
+
+- Deployment of GPTQ, 4-bit quantized CodeLlama-Python-34B model using [vLLM](https://github.com/chu-tianxiang/vllm-gptq).
+- Experimented with various inference libraries like HuggingFace Transformer Pipeline, AutoGPTQ, Text Generation Inference,vLLM favoring vLLM for best latency and token rate.
+- By using the vLLM with GPTQ 4bit quantized model, you can expect an average lowest latency of 3.51 sec and average token generation rate of 58.40/sec. This setup has an average cold start time of 21.8 sec.
+- Dependencies defined in config.yaml using vLLM.
+- GitHub/Gitlab template creation with app.py and config.yaml.
 - Model class in app.py with initialize, infer, and finalize functions.
 - Custom runtime creation with necessary system and Python packages.
-- Model import via GitHub with input/output parameters in JSON.
+- Model import via GitHub with input_schema.py.
 - Recommended GPU: NVIDIA A100 for optimal performance.
 - Custom runtime selection in advanced configuration.
-- Final review and deployment on the Inferless platform.
+- Final review and deployment on Inferless platform.
 
 ---
 ## Prerequisites
@@ -38,49 +40,12 @@ This will create a copy of the repository in your own GitHub account, allowing y
 ### Import the Model in Inferless
 Log in to your inferless account, select the workspace you want the model to be imported into and click the Add Model button.
 
-Select the PyTorch as framework and choose **Repo(custom code)** as your model source and use the forked repo URL as the **Model URL**.
+Select GitHub as a provider and choose your model repository and the branch.
 
 After the create model step, while setting the configuration for the model make sure to select the appropriate runtime.
 
 Enter all the required details to Import your model. Refer [this link](https://docs.inferless.com/integrations/github-custom-code) for more information on model import.
 
-The following is a sample Input and Output JSON for this model which you can use while importing this model on Inferless.
-
-### Input
-```json
-{
-    "inputs": [
-      {
-        "data": [
-          "def factorial(int n):"
-        ],
-        "name": "prompt",
-        "shape": [
-          1
-        ],
-        "datatype": "BYTES"
-      }
-    ]
-}
-```
-
-### Output
-```json
-{
-    "outputs": [
-      {
-        "data": [
-          "data"
-        ],
-        "name": "result",
-        "shape": [
-          1
-        ],
-        "datatype": "BYTES"
-      }
-    ]
-}
-```
 
 ---
 ## Curl Command
